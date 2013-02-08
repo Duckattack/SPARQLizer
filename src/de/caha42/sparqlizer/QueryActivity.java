@@ -1,7 +1,5 @@
 package de.caha42.sparqlizer;
 
-import java.io.InputStream;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,6 +8,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.hp.hpl.jena.query.ResultSet;
+
 import de.caha42.sparqlizer.task.SPARQLExecutionTask;
 
 public class QueryActivity extends Activity {
@@ -56,13 +57,13 @@ public class QueryActivity extends Activity {
 		SPARQLExecutionTask sparqlExecutionTask = new SPARQLExecutionTask(this);
 		sparqlExecutionTask.execute(endpoint, queryString);
 
-		InputStream response = null;
+		String response = null;
 		try {
 			response = sparqlExecutionTask.get();
 		} catch (Exception e) {
 			Toast.makeText(this, "An error occured: " + e.getMessage(), Toast.LENGTH_LONG).show();
 		}
-
+		
 		Intent intent = new Intent(this, ResultActivity.class);
 		intent.putExtra(SPARQL_RESULT, response);
 		startActivity(intent);

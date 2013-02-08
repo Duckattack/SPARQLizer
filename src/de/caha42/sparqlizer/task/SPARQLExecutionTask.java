@@ -1,28 +1,29 @@
 package de.caha42.sparqlizer.task;
 
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLEncoder;
+import java.util.List;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
-import android.widget.Toast;
 
-public class SPARQLExecutionTask extends AsyncTask<String, Integer, InputStream> {
+import com.hp.hpl.jena.query.Query;
+import com.hp.hpl.jena.query.QueryExecution;
+import com.hp.hpl.jena.query.QueryExecutionFactory;
+import com.hp.hpl.jena.query.QueryFactory;
+import com.hp.hpl.jena.query.QuerySolution;
+import com.hp.hpl.jena.query.ResultSet;
+import com.hp.hpl.jena.query.Syntax;
+
+public class SPARQLExecutionTask extends AsyncTask<String, Integer, String> {
 
 	private Activity context;
 	private ProgressDialog dialog;
-	
+
 	public SPARQLExecutionTask(Activity activity) {
 		context = activity;
 		dialog = new ProgressDialog(context);
 	}
-	
+
 	@Override
 	protected void onPreExecute() {
 		dialog.setMessage("Please wait...");
@@ -30,40 +31,65 @@ public class SPARQLExecutionTask extends AsyncTask<String, Integer, InputStream>
 	} 
 
 	@Override
-	protected InputStream doInBackground(String... params) {
-		InputStream response = null;
-		try {
-			// Construct data
-			String data = URLEncoder.encode("query", "UTF-8") + "=" +
-					URLEncoder.encode(params[1], "UTF-8");
+	protected String doInBackground(String... params) {
+		String sparqlEndpointUri = params[0];
+		String queryString = params[1];
 
-			// Send data
-			URL url = new URL(params[0]);
-			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+		// Create a Query instance
+		Query query = QueryFactory.create(queryString, Syntax.syntaxARQ);
 
-			conn.setDoInput(true);
-			conn.setDoOutput(true);
-			conn.setRequestMethod("POST");
-//			conn.setRequestProperty("query", params[1]);		
+		// Limit the number of results returned
+		// Setting the limit is optional - default is unlimited
+		query.setLimit(10);
 
-			DataOutputStream wr = new DataOutputStream(conn.getOutputStream());
-			wr.write(data.getBytes());
-			wr.flush();
-			wr.close();
-			
-			// Get the response
-			response = conn.getInputStream();		
-		} catch (Exception e) {
-			Toast.makeText(context, "An error occured: " + e.getMessage(), Toast.LENGTH_LONG).show();
+		// Set the starting record for results returned
+		// Setting the limit is optional - default is 1 (and it is 1-based)
+		query.setOffset(11);
+
+		// This query uses an external SPARQL endpoint for processing
+		// This is the syntax for that type of query
+		QueryExecution qe = QueryExecutionFactory.sparqlService(sparqlEndpointUri, query);
+
+		// Execute the query and obtain results
+		ResultSet resultSet = qe.execSelect();
+
+		// Get the column names (the aliases supplied in the SELECT clause)
+		List<String> columnNames = resultSet.getResultVars();
+
+		// Setup a place to house results for output
+		StringBuffer response = new StringBuffer();
+
+		// Iterate through all resulting rows
+		while (resultSet.hasNext()) {
+			// Get the next result row
+			QuerySolution solution = resultSet.next();
+
+			for (String columnName : columnNames) {
+				// Data value will be null if optional and not present
+				if (solution.get(columnName) == null) {
+					response.append("{null}");
+					// Test whether the returned value is a literal value
+				} else if (solution.get(columnName).isLiteral()) {
+					response.append(solution.getLiteral(columnName).toString());
+					// Otherwise the returned value is a URI
+				} else {
+					response.append(solution.getResource(columnName).getURI());
+				}
+				response.append('\n');
+			}
+			response.append("-----------------\n");
 		}
-		return response;
+		// Important - free up resources used running the query
+		qe.close();
+
+		return response.toString();
 	}
 
 	@Override
-	protected void onPostExecute(InputStream response) {
+	protected void onPostExecute(String response) {
 		if (dialog.isShowing()) {
-            dialog.dismiss();
-        }
+			dialog.dismiss();
+		}
 	}
 
 }

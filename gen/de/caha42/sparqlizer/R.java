@@ -36,12 +36,11 @@ public final class R {
         public static final int button_send=0x7f040006;
         public static final int endpoint_label=0x7f040002;
         public static final int endpoint_message=0x7f040003;
-        public static final int hello_world=0x7f040008;
         public static final int menu_settings=0x7f040001;
         public static final int result_label=0x7f040007;
         public static final int sparql_query_label=0x7f040004;
         public static final int sparql_query_message=0x7f040005;
-        public static final int title_activity_result=0x7f040009;
+        public static final int title_activity_result=0x7f040008;
     }
     public static final class style {
         /** 

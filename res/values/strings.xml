@@ -9,7 +9,6 @@
     <string name="sparql_query_message">Enter SPARQL Query</string>
     <string name="button_send">Send</string>
     <string name="result_label">SPARQL Result</string>
-    <string name="hello_world">Hello world!</string>
     <string name="title_activity_result">ResultActivity</string>
 
 </resources>
