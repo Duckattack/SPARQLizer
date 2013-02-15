@@ -8,7 +8,8 @@
         android:id="@+id/endpoint_label"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/endpoint_label" />
+        android:hint="@string/endpoint_label"
+        android:textIsSelectable="false" />
     
     <EditText
         android:id="@+id/endpoint"
@@ -17,19 +18,53 @@
         android:layout_below="@id/endpoint_label"
         android:hint="@string/endpoint_message" />
 
+    <Button
+        android:id="@+id/predicate_query_send"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/endpoint"
+        android:layout_alignParentRight="true"
+        android:text="@string/button_predicate" />
+    
+    <Button
+        android:id="@+id/graph_query_send"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/endpoint"
+        android:layout_toLeftOf="@id/predicate_query_send"
+        android:text="@string/button_graph" />
+    
+     <TextView
+        android:id="@+id/graph_label"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/predicate_query_send"
+        android:hint="@string/graph_message"
+        android:textIsSelectable="false" />
+    
+    <AutoCompleteTextView
+        android:id="@+id/graph"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/graph_label"
+        android:hint="@string/graph_message" />
+    
     <TextView
         android:id="@+id/sparql_query_label"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/endpoint"
-        android:hint="@string/sparql_query_label" />
+        android:layout_below="@id/graph"
+        android:hint="@string/sparql_query_label"
+        android:textIsSelectable="false" />
     
-    <EditText
+    <MultiAutoCompleteTextView
         android:id="@+id/sparql_query"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/sparql_query_label"
         android:inputType="textMultiLine"
+        android:gravity="top"  
+        android:isScrollContainer="true"
         android:hint="@string/sparql_query_message" />
 
     <Button
@@ -39,5 +74,22 @@
         android:layout_below="@id/sparql_query"
         android:layout_alignParentRight="true"
         android:text="@string/button_send" />
+    
+    <Button android:id="@+id/sparql_query_load" 
+        android:layout_width="wrap_content" 
+        android:layout_height="wrap_content" 
+        android:layout_below="@id/sparql_query"
+        android:layout_toLeftOf="@id/sparql_query_send" 
+        android:text="@string/button_load" />
+    
+    <Button
+        android:id="@+id/sparql_query_save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/sparql_query"
+        android:layout_toLeftOf="@id/sparql_query_load" 
+        android:text="@string/button_save" />
+    
+    
 
 </RelativeLayout>

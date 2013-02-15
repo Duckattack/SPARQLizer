@@ -3,12 +3,20 @@
 
     <string name="app_name">SPARQLizer</string>
     <string name="menu_settings">Settings</string>
-    <string name="endpoint_label">Endpoint URL:</string>
-    <string name="endpoint_message">Enter URL of SPARQL endpoint</string>
+    
+    <string name="endpoint_label">Endpoint URI:</string>
+    <string name="endpoint_message">Enter URI of SPARQL endpoint</string>
+    <string name="button_graph">Load Graphs</string>
+    <string name="button_predicate">Load Predicates</string>
+    <string name="graph_label">Default Graph URI:</string>
+    <string name="graph_message">Enter URI of default graph</string>
     <string name="sparql_query_label">SPARQL Query:</string>
-    <string name="sparql_query_message">Enter SPARQL Query</string>
+    <string name="sparql_query_message">Enter SPARQL query</string>
     <string name="button_send">Send</string>
-    <string name="result_label">SPARQL Result</string>
+	<string name="button_save">Save</string>
+	<string name="button_load">Load</string>
+    
     <string name="title_activity_result">ResultActivity</string>
+    <string name="result_label">SPARQL Result</string>
 
 </resources>
