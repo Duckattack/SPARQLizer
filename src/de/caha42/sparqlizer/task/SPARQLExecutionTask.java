@@ -47,7 +47,9 @@ public class SPARQLExecutionTask extends AsyncTask<String, Integer, ResultSet> {
 		// This query uses an external SPARQL endpoint for processing
 		// This is the syntax for that type of query
 		QueryExecution qe;
-		if (defaultGraph == null || defaultGraph.trim().length() == 0) {
+		if (defaultGraph == null 
+				|| defaultGraph.trim().length() == 0 
+				|| defaultGraph.equals("ALL")) {
 			qe = QueryExecutionFactory.sparqlService(sparqlEndpointUri, query);
 		} else {
 			qe = QueryExecutionFactory.sparqlService(sparqlEndpointUri, query, defaultGraph);

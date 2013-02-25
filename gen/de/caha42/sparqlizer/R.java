@@ -53,6 +53,7 @@ public final class R {
         public static final int sparql_query_label=0x7f040008;
         public static final int sparql_query_message=0x7f040009;
         public static final int title_activity_result=0x7f04000d;
+        public static final int title_list_dialog_endpoints=0x7f04000f;
     }
     public static final class style {
         /** 
