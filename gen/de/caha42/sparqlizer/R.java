@@ -16,22 +16,23 @@ public final class R {
     public static final class id {
         public static final int endpoint=0x7f070001;
         public static final int endpoint_label=0x7f070000;
-        public static final int graph=0x7f070005;
-        public static final int graph_label=0x7f070004;
+        public static final int graph=0x7f070004;
+        public static final int graph_label=0x7f070002;
         public static final int graph_query_send=0x7f070003;
         public static final int menu_settings=0x7f07000d;
-        public static final int predicate_query_send=0x7f070002;
+        public static final int predicate_query_send=0x7f070006;
         public static final int result=0x7f07000c;
         public static final int result_label=0x7f07000b;
         public static final int sparql_query=0x7f070007;
-        public static final int sparql_query_label=0x7f070006;
+        public static final int sparql_query_label=0x7f070005;
         public static final int sparql_query_load=0x7f070009;
         public static final int sparql_query_save=0x7f07000a;
         public static final int sparql_query_send=0x7f070008;
     }
     public static final class layout {
-        public static final int activity_query=0x7f030000;
-        public static final int activity_result=0x7f030001;
+        public static final int activity_endpointlist=0x7f030000;
+        public static final int activity_query=0x7f030001;
+        public static final int activity_result=0x7f030002;
     }
     public static final class menu {
         public static final int activity_query=0x7f060000;
@@ -39,21 +40,22 @@ public final class R {
     }
     public static final class string {
         public static final int app_name=0x7f040000;
-        public static final int button_graph=0x7f040004;
-        public static final int button_load=0x7f04000c;
-        public static final int button_predicate=0x7f040005;
-        public static final int button_save=0x7f04000b;
-        public static final int button_send=0x7f04000a;
-        public static final int endpoint_label=0x7f040002;
-        public static final int endpoint_message=0x7f040003;
-        public static final int graph_label=0x7f040006;
-        public static final int graph_message=0x7f040007;
-        public static final int menu_settings=0x7f040001;
-        public static final int result_label=0x7f04000e;
-        public static final int sparql_query_label=0x7f040008;
-        public static final int sparql_query_message=0x7f040009;
-        public static final int title_activity_result=0x7f04000d;
-        public static final int title_list_dialog_endpoints=0x7f04000f;
+        public static final int button_graph=0x7f040006;
+        public static final int button_load=0x7f04000e;
+        public static final int button_predicate=0x7f040007;
+        public static final int button_save=0x7f04000d;
+        public static final int button_send=0x7f04000c;
+        public static final int empty=0x7f040010;
+        public static final int endpoint_label=0x7f040004;
+        public static final int endpoint_message=0x7f040005;
+        public static final int graph_label=0x7f040008;
+        public static final int graph_message=0x7f040009;
+        public static final int menu_settings=0x7f040003;
+        public static final int result_label=0x7f04000f;
+        public static final int sparql_query_label=0x7f04000a;
+        public static final int sparql_query_message=0x7f04000b;
+        public static final int title_activity_endpointlist=0x7f040002;
+        public static final int title_activity_result=0x7f040001;
     }
     public static final class style {
         /** 

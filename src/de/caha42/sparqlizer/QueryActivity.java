@@ -1,12 +1,14 @@
 package de.caha42.sparqlizer;
 
-import com.hp.hpl.jena.query.ResultSet;
+import java.util.ArrayList;
+import java.util.Vector;
 
 import android.app.Activity;
-import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
@@ -18,6 +20,8 @@ import android.widget.MultiAutoCompleteTextView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.hp.hpl.jena.query.ResultSet;
+
 import de.caha42.sparqlizer.task.SPARQLExecutionTask;
 import de.caha42.sparqlizer.utils.DatabaseUtils;
 import de.caha42.sparqlizer.utils.SPARQLUtils;
@@ -25,8 +29,6 @@ import de.caha42.sparqlizer.utils.SPARQLUtils;
 public class QueryActivity extends Activity {
 
 	public final static String SPARQL_RESULT = "de.caha42.sparqlizer.SPARQLRESULT";
-
-	private DatabaseUtils storage;
 
 	private EditText endpointUri;
 	private Spinner defaultGraph;
@@ -39,14 +41,12 @@ public class QueryActivity extends Activity {
 	private Button loadSparqlQuery;
 
 	private String graph;
+	private Vector<String> suggestions = new Vector<String>();
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_query);
-
-		// create Database
-		storage = new DatabaseUtils(this);
 
 		// Textfields
 		endpointUri = (EditText) findViewById(R.id.endpoint);
@@ -63,6 +63,7 @@ public class QueryActivity extends Activity {
 
 		sparqlQuery = (MultiAutoCompleteTextView) findViewById(R.id.sparql_query);
 		sparqlQuery.setText("SELECT * WHERE {?s ?p ?o .} LIMIT 5");
+		sparqlQuery.addTextChangedListener(new SPARQLTextWatcher(this));
 
 		// Buttons		
 		sendGraphQuery = (Button) findViewById(R.id.graph_query_send);
@@ -108,13 +109,15 @@ public class QueryActivity extends Activity {
 		storeSparqlQuery = (Button) findViewById(R.id.sparql_query_save);
 		storeSparqlQuery.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				storage.storeSPARQLQuery(endpointUri.getText().toString(), graph, sparqlQuery.getText().toString(), "tmp", "tmp");
+				DatabaseUtils.getInstance(v.getContext()).storeSPARQLQuery(endpointUri.getText().toString(), graph, sparqlQuery.getText().toString(), "tmp", "tmp");
 			}
 		});
 
 		loadSparqlQuery = (Button) findViewById(R.id.sparql_query_load);
 		loadSparqlQuery.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
+				Intent intent = new Intent(v.getContext(), EndpointListActivity.class);
+				startActivity(intent);
 			}
 		});
 	}
@@ -159,4 +162,41 @@ public class QueryActivity extends Activity {
 		return response;
 	}
 
+	
+	private class SPARQLTextWatcher implements TextWatcher {
+
+		private Context context;
+		private String remember = "";
+		private boolean inWord = false;
+		
+		public SPARQLTextWatcher(Context context) {
+			this.context = context;
+		}
+		
+		@Override
+		public void afterTextChanged(Editable s) {
+		}
+
+		@Override
+		public void beforeTextChanged(CharSequence s, int start, int count,
+				int after) {
+		}
+
+		@Override
+		public void onTextChanged(CharSequence s, int start, int before, int count) {
+			// Instead try overwriting tokenizer
+			if (inWord && s.charAt(start) == ' ') {
+				suggestions.add(remember);
+				sparqlQuery.setAdapter(new ArrayAdapter<String>(context, 
+						android.R.layout.simple_dropdown_item_1line,
+						suggestions.toArray(new String[suggestions.size()])));
+				inWord = false;
+				remember = "";
+			} else if (s.charAt(start) == '?' || inWord) {
+				inWord = true;
+				remember += s.subSequence(start, start+count);
+			} 
+		}
+
+	}
 }

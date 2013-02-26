@@ -20,12 +20,15 @@
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name="de.caha42.sparqlizer.ResultActivity"
+            android:label="@string/title_activity_result" >
+        </activity>
+        <activity
+            android:name="de.caha42.sparqlizer.EndpointListActivity"
             android:label="@string/title_activity_result" >
         </activity>
     </application>

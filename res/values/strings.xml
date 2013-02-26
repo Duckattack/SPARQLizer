@@ -2,6 +2,8 @@
 <resources>
 
     <string name="app_name">SPARQLizer</string>
+    <string name="title_activity_result">SPARQL Result</string>
+    <string name="title_activity_endpointlist">Endpoints</string>
     <string name="menu_settings">Settings</string>
     
     <string name="endpoint_label">Endpoint URI:</string>
@@ -16,9 +18,8 @@
 	<string name="button_save">Save</string>
 	<string name="button_load">Load</string>
     
-    <string name="title_activity_result">ResultActivity</string>
     <string name="result_label">SPARQL Result</string>
     
-    <string name="title_list_dialog_endpoints">Pick endpoint</string>
+    <string name="empty">Empty</string>
 
 </resources>

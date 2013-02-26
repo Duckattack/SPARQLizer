@@ -10,10 +10,13 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DatabaseUtils extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 1;
+	private static DatabaseUtils instance = null;
+	
+    private static final int DATABASE_VERSION = 2;
     private static final String DATABASE_NAME = "SPARQLizerStorage";
     private static final String SPARQL_TABLE_NAME = "sparql";
-    private static final String SPARQL_COLUMN_URI = "endpointURI";
+    public static final String SPARQL_COLUMN_PK = "_id";
+    public static final String SPARQL_COLUMN_URI = "endpointURI";
     private static final String SPARQL_COLUMN_GRAPH = "graph";
     private static final String SPARQL_COLUMN_QUERY = "query";
     private static final String SPARQL_COLUMN_QUERY_NAME = "query_name";
@@ -21,17 +24,24 @@ public class DatabaseUtils extends SQLiteOpenHelper {
     
     private static final String DICTIONARY_TABLE_CREATE =
     		"CREATE TABLE " + SPARQL_TABLE_NAME + " (" +
-    				"id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+    				SPARQL_COLUMN_PK + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
     				SPARQL_COLUMN_URI + " TEXT NOT NULL, " +
     				SPARQL_COLUMN_GRAPH + " TEXT, " +
     				SPARQL_COLUMN_QUERY_NAME + " TEXT NOT NULL, " +
     				SPARQL_COLUMN_QUERY_DESCRIPTION + " TEXT, " +
     				SPARQL_COLUMN_QUERY + " TEXT NOT NULL);";
 
-    public DatabaseUtils(Context context) {
-        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+    private DatabaseUtils(Context context) {
+         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
     
+    public static DatabaseUtils getInstance(Context context) {
+        if (instance == null) {
+            instance = new DatabaseUtils(context);
+        }
+        return instance;
+    }
+
     
 	@Override
 	public void onCreate(SQLiteDatabase db) {
@@ -70,8 +80,8 @@ public class DatabaseUtils extends SQLiteOpenHelper {
 		SQLiteDatabase db = getReadableDatabase();
 		return db.query(true, 
 				SPARQL_TABLE_NAME, 
-				new String[] {SPARQL_COLUMN_URI}, 
-				null, null, null, null, null, SPARQL_COLUMN_URI);
+				new String[] {SPARQL_COLUMN_PK, SPARQL_COLUMN_URI}, 
+				null, null, null, null, SPARQL_COLUMN_URI, null);
 	}
 	
 	public static String[] formatCursorAsStringArray(Cursor cursor) {
